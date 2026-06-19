@@ -96,8 +96,8 @@ all(x => x.punchcard({vertical:true, labels:true}))
 all(x => x.gain(.3))
 
 
-
-// my flesh burned by you burns out in the dark as if I am in an abyss     : Моя обпалена тобою плоть догорає в пітьмі і ніби я в безодні
+// Lyrics
+// My flesh burned by you burns out in the dark as if I am in an abyss     : Моя обпалена тобою плоть догорає в пітьмі і ніби я в безодні
 // I choose blood and dissolve in you again                                : я обираю кров розчиняюсь знов в тобі
 // I feel fear but I like the taste of it                                  : І я відчуваю страх але мені подобається його смак
 // I discover new sensations                                               : я відкриваю нові відчуття 
