@@ -1,0 +1,122 @@
+// Ariadna - Безодня
+// by exa
+
+await samples({ abyss: [
+  'https://ericjaipal.github.io/samples/abyss/abyss1.wav',
+  'https://ericjaipal.github.io/samples/abyss/abyss2.wav',
+  'https://ericjaipal.github.io/samples/abyss/abyss3.wav',
+  'https://ericjaipal.github.io/samples/abyss/abyss4.wav'
+]})
+
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+function blockArrange(patArr, modifiers = []) {
+  return stack(
+    ...patArr.map(([pat, maskPat]) => {
+      pat = [pat].flat()
+      
+      return maskPat.fmap(m => {
+       return stack(...pat.map(p => {
+        
+         if (m == 0) {
+           return
+         }
+         const ms = m.toString()
+         let newPat = p
+         
+         if (ms.includes('R')){
+           newPat = newPat.restart(1)
+         }
+         if (ms.includes('B')) {
+           newPat = newPat.rev().speed(-1)
+         }
+         modifiers.forEach(([mod, callback]) => {
+          if (mod(ms)) {
+           newPat = callback(newPat)
+         } 
+         })
+         return newPat
+       }).filter(Boolean))
+      }).innerJoin()
+    }).flat()
+  ) 
+}
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+setCpm(125 /4)
+
+const bass = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").late(8).postgain(0.3)
+const bass2 = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").postgain(0.3)
+const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass_1:4").transpose("0,24").detune(1).hpf(750).lpf(2000).room(1.5).postgain(.8)
+const duck = s("sine").rarely(trans("12")).duck("3")
+const drum = s("bd").trans("0,-12").postgain(.7)
+const snare = s("sd:9").struct("- x - x").late(.5).postgain(.6)
+const hat = s("hh:2!16").bank("[KorgDDM110, RolandTR707]").hpf(7000).postgain(.3)  // .almostNever(struct("-")).rib(7,4)
+
+const VERSE1 = s("abyss:4").loopAt(22.4).chop(16).clip(1).postgain(2.5).late(8.125)
+const CHORUS1 = s("abyss:3").loopAt(22.4).chop(8).cut(1).postgain(2.5).late(25.6)
+const VERSE2 = s("abyss:1").loopAt(22.4).chop(16).cut(1).clip(1).postgain(2.5).late(3.2)
+const CHORUS2 = s("abyss:2").loopAt(17).chop(8).cut(1).clip(1).postgain(2.5).late(65.6)
+
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+$: blockArrange(
+  [ 
+    [[bass],       "<0@8 1@16                            1@16 0@8                            0@16                            1@16                            0@8>"],
+    [[bass2],      "<1@8 0@16                            0@16 1@8                            1@16                            0@16                            0@8>"],
+    [[lead],       "<1@8 0@16                            1@24                                0@16                            1@16                            0@8>"],
+    [[duck],       "<0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8>"],
+    [[drum],       "<0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8>"],
+    [[snare],      "<0@8 1@16                            1@16 0@8                            1@16                            1@16                            0@8>"],
+    [[hat],        "<1@8 0@8 1@8                         1@24                                0@8 1@8                         1@16                            0@8>"],
+    
+    
+    [[VERSE1],     "<0@8 1@16                            0@24                                0@16                            0@16                            0@8>"], 
+    [[CHORUS1],    "<0@24                                1@16 1@8                            0@16                            0@16                            0@8>"], 
+    [[VERSE2],     "<0@24                                0@24                                1@16                            0@16                            0@8>"], 
+    [[CHORUS2],    "<0@24                                0@16 0@8                            0@16                            1@16                            0@8>"], 
+   
+  ],
+  
+  [[(m) => m.includes('A') , (x) => x.struct("x - - x - - x - - - x - - - - -")],
+   [(m) => m.includes('K') , (x) => x.struct("x - - x - - x - - - x - - - x -")],
+   [(m) => m.includes('C') , (x) => x.struct("x - - - - - - - - - x - - - - -")],
+   [(m) => m.includes('D') , (x) => x.struct("x - - - - - - - - - x - - x - -")],
+   [(m) => m.includes('W') , (x) => x.lpf(500)],
+   [(m) => m.includes('X') , (x) => x.lpf(1000)],
+   [(m) => m.includes('Y') , (x) => x.lpf(2500)],
+   [(m) => m.includes('Z') , (x) => x.lpf(5000)],
+   [(m) => m.includes('F') , (x) => x.room(0.75)],
+  ]
+) 
+
+  
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+all(x => x.color("#b781d6"))
+all(x => x.punchcard({vertical:true, labels:true}))
+all(x => x.gain(.3))
+
+
+
+// my flesh burned by you burns out in the dark as if I am in an abyss     : Моя обпалена тобою плоть догорає в пітьмі і ніби я в безодні
+// I choose blood and dissolve in you again                                : я обираю кров розчиняюсь знов в тобі
+// I feel fear but I like the taste of it                                  : І я відчуваю страх але мені подобається його смак
+// I discover new sensations                                               : я відкриваю нові відчуття 
+// like I'm you you are me                                                 : ніби я ти ти я
+
+// like I'm you you are me                                                 : ніби я ти, ти я
+// like I'm you you are me                                                 : ніби я ти, ти я
+// the truth is in the veins in the blood gains new strength               : Істина в жилах в крові набуває нових сил
+// I dissolve in you like liquid smoke, like liquid smoke                  : я розчиняюсь в тобі наче рідкий дим, наче рідкий дим
+// the truth is in the veins in the blood gains new strength               : Істина в жилах в крові набуває нових сил
+// I dissolve in you like liquid smoke, like liquid smoke                  : я розчиняюсь в тобі наче рідкий дим, наче рідкий дим
+
+// fly away where we are no longer there                                   : Улітай там де нас більше нема
+// how much more blood is needed to remember that I'm alive                : скільки ще треба крові щоб згадати що жива
+// I feel fear but I like the taste of it                                  : І я відчуваю страх але мені подобається його смак
+// I discover new sensations                                               : я відкриваю нові відчуття
+// like I'm you you are me                                                 : ніби я ти ти я
+
+// like I'm you you are me                                                 : ніби я ти ти я
+// like I'm you you are me                                                 : ніби я ти ти я
+// the truth is in the veins in the blood gains new strength               : Істина в жилах в крові набуває нових сил
+// I dissolve in you like liquid smoke, like liquid smoke                  : я розчиняюсь в тобі наче рідкий дим, наче рідкий дим
