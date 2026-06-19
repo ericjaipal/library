@@ -46,11 +46,11 @@ setCpm(125 /4)
 
 const bass = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").late(8).postgain(0.3)
 const bass2 = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").postgain(0.3)
-const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass_1:4").transpose("0,24").detune(1).hpf(750).lpf(2000).room(1.5).postgain(.8)
+const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass_1:4").transpose("0,24").detune(1.3).sometimesBy(.1, x=>x.detune("2")).hpf(750).lpf(2000).room(2.5).postgain(1.6 | .1)
 const duck = s("sine").rarely(trans("12")).duck("3")
 const drum = s("bd").trans("0,-12").postgain(.7)
 const snare = s("sd:9").struct("- x - x").late(.5).postgain(.6)
-const hat = s("hh:3!16").bank("[rolandtr505]").hpf(8000).lpf(4000).postgain(.8)  // .almostNever(struct("-")).rib(7,4)
+const hat = s("sd:1!16").bank("[rhythmace]").hpf(8000).lpf(4000).postgain(.8)  // .almostNever(struct("-")).rib(7,4)
 const preload = s("abyss:1 abyss:2 abyss:3").postgain(0).chop(16).cut(1)
 
 const VERSE1 = s("abyss:4").loopAt(22.5).chop(16).clip(1).postgain(2.5).late(8.05)
@@ -63,7 +63,7 @@ $: blockArrange(
   [ 
     [[bass],       "<0@8 1@16                            1@16 0@8                            0@16                            1@16                            0@8>"],
     [[bass2],      "<1@8 0@16                            0@16 1@8                            1@16                            0@16                            0@8>"],
-    [[lead],       "<1@8 0@16                            1@24                                0@16                            1@16                            0@8>"],
+    [[lead],       "<X@8 0@16                            X@24                                0@16                            X@16                            0@8>"],
     [[duck],       "<0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8>"],
     [[drum],       "<0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8>"],
     [[snare],      "<0@8 1@16                            1@16 0@8                            1@16                            1@16                            0@8>"],
@@ -81,11 +81,7 @@ $: blockArrange(
    [(m) => m.includes('K') , (x) => x.struct("x - - x - - x - - - x - - - x -")],
    [(m) => m.includes('C') , (x) => x.struct("x - - - - - - - - - x - - - - -")],
    [(m) => m.includes('D') , (x) => x.struct("x - - - - - - - - - x - - x - -")],
-   [(m) => m.includes('W') , (x) => x.lpf(500)],
    [(m) => m.includes('X') , (x) => x.lpf(1000)],
-   [(m) => m.includes('Y') , (x) => x.lpf(2500)],
-   [(m) => m.includes('Z') , (x) => x.lpf(5000)],
-   [(m) => m.includes('F') , (x) => x.room(0.75)],
   ]
 ) 
 
@@ -94,8 +90,8 @@ $: blockArrange(
 
 all(x => x.color("#b781d6"))
 all(x => x.punchcard({vertical:true, labels:true}))
-all(x => x.gain(.3))
-
+all(x => x.gain(slider(.3,0,1)))
+// use slider to control volume ^
 
 // Ariadna - Безодня
 // Lyrics
