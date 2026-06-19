@@ -50,7 +50,8 @@ const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass
 const duck = s("sine").rarely(trans("12")).duck("3")
 const drum = s("bd").trans("0,-12").postgain(.7)
 const snare = s("sd:9").struct("- x - x").late(.5).postgain(.6)
-const hat = s("hh:2!16").bank("[KorgDDM110, RolandTR707]").hpf(7000).postgain(.3)  // .almostNever(struct("-")).rib(7,4)
+const hat = s("hh:3!16").bank("[rolandtr505]").hpf(8000).lpf(4000).postgain(.8)  // .almostNever(struct("-")).rib(7,4)
+const preload = s("abyss:1 abyss:2 abyss:3").postgain(0).chop(16).cut(1)
 
 const VERSE1 = s("abyss:4").loopAt(22.5).chop(16).clip(1).postgain(2.5).late(8.075)
 const CHORUS1 = s("abyss:3").loopAt(22.4).chop(8).cut(1).postgain(2.5).late(25.6)
@@ -67,7 +68,7 @@ $: blockArrange(
     [[drum],       "<0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8 A@1 K@1 A@3 K@1 A@2 C@3 D@1 C@4 K@1 A@3 K@1 A@3 K@1 A@3 K@1 A@3 0@8>"],
     [[snare],      "<0@8 1@16                            1@16 0@8                            1@16                            1@16                            0@8>"],
     [[hat],        "<1@8 0@8 1@8                         1@24                                0@8 1@8                         1@16                            0@8>"],
-    
+    [[preload],    "<1@1 0@88 >"],  
     
     [[VERSE1],     "<0@8 1@16                            0@24                                0@16                            0@16                            0@8>"], 
     [[CHORUS1],    "<0@24                                1@16 1@8                            0@16                            0@16                            0@8>"], 
