@@ -46,7 +46,7 @@ setCpm(125 /4)
 
 const bass = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").late(8).postgain(0.3)
 const bass2 = note("<[d#1] [a#1] [<b1 b0>] [<f#1!2 [F#2 F#1] f#1>]>").s("supersaw,sawtooth").o(3).detune("1").lpf("1800").distort(2).room(1).attack(".01").postgain(0.3)
-const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass_1:4").transpose("0,24").detune(1).sometimesBy(.1, x=>x.detune("1.6")).hpf(750).lpf(2000).room(2.5).postgain(1.6 | .1)
+const lead = note("[f#3 f3 a#3 [C#4 b3]]/4").s("supersaw,sawtooth,gm_synth_brass_1:4").transpose("0,24").detune(1).sometimesBy(.1, x=>x.detune("1.3")).hpf(750).lpf(2000).room(2.5).postgain(1.6 | .1)
 const duck = s("sine").rarely(trans("12")).duck("3")
 const drum = s("bd").trans("0,-12").postgain(.7)
 const snare = s("sd:9").struct("- x - x").late(.5).postgain(.6)
