@@ -53,9 +53,9 @@ const snare = s("sd:9").struct("- x - x").late(.5).postgain(.6)
 const hat = s("hh:3!16").bank("[rolandtr505]").hpf(8000).lpf(4000).postgain(.8)  // .almostNever(struct("-")).rib(7,4)
 const preload = s("abyss:1 abyss:2 abyss:3").postgain(0).chop(16).cut(1)
 
-const VERSE1 = s("abyss:4").loopAt(22.5).chop(16).clip(1).postgain(2.5).late(8.075)
+const VERSE1 = s("abyss:4").loopAt(22.5).chop(16).clip(1).postgain(2.5).late(8.05)
 const CHORUS1 = s("abyss:3").loopAt(22.4).chop(8).cut(1).postgain(2.5).late(25.6)
-const VERSE2 = s("abyss:1").loopAt(22.42).chop(16).cut(1).clip(1).postgain(2.5).late(3.2)
+const VERSE2 = s("abyss:1").loopAt(22.42).chop(16).cut(1).clip(1).postgain(2.5).late(3.15)
 const CHORUS2 = s("abyss:2").loopAt(22.42).chop(16).cut(1).clip(1).postgain(2.5).late(65.5)
 
 // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -97,7 +97,10 @@ all(x => x.punchcard({vertical:true, labels:true}))
 all(x => x.gain(.3))
 
 
+// Ariadna - Безодня
 // Lyrics
+
+
 // My flesh burned by you burns out in the dark as if I am in an abyss     : Моя обпалена тобою плоть догорає в пітьмі і ніби я в безодні
 // I choose blood and dissolve in you again                                : я обираю кров розчиняюсь знов в тобі
 // I feel fear but I like the taste of it                                  : І я відчуваю страх але мені подобається його смак
